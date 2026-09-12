@@ -25,25 +25,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title});
 
   final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
- 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         child: Column(
@@ -52,9 +44,14 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              'COUNTER STATE VALUE',
-              style: Theme.of(context).textTheme.headlineMedium,
+            BlocBuilder<CounterCubit, CounterState>(
+              bloc: BlocProvider.of<CounterCubit>(context),
+              builder: (context, state) {
+                return Text(
+                  '${state.value}',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                );
+              },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 16.0,
                 ),
                 FloatingActionButton(
-                  onPressed:BlocProvider.of<CounterCubit>(context).decrement,
+                  onPressed: BlocProvider.of<CounterCubit>(context).decrement,
                   child: const Icon(Icons.remove),
                 ),
               ],
@@ -75,11 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }
