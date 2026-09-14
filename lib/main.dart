@@ -37,55 +37,52 @@ class MyHomePage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(title),
       ),
-      body: BlocListener<CounterCubit, CounterState>(
-        bloc: BlocProvider.of<CounterCubit>(context),
-        listener: (context, state) {
-          final SnackBar snackBar;
-          if (state.hasIncremented == true) {
-            snackBar = const SnackBar(
-              content: Text('Incremented'),
-            );
-          } else {
-            snackBar = const SnackBar(
-              content: Text('Decremented'),
-            );
-          }
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        },
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              BlocBuilder<CounterCubit, CounterState>(
-                bloc: BlocProvider.of<CounterCubit>(context),
-                builder: (context, state) {
-                  return Text(
-                    '${state.value}',
-                    style: Theme.of(context).textTheme.headlineMedium,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            BlocConsumer<CounterCubit, CounterState>(
+              bloc: BlocProvider.of<CounterCubit>(context),
+              listener: (context, state) {
+                final SnackBar snackBar;
+                if (state.hasIncremented == true) {
+                  snackBar = const SnackBar(
+                    content: Text('Incremented'),
                   );
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FloatingActionButton(
-                    onPressed: BlocProvider.of<CounterCubit>(context).increment,
-                    child: const Icon(Icons.add),
-                  ),
-                  const SizedBox(
-                    width: 16.0,
-                  ),
-                  FloatingActionButton(
-                    onPressed: BlocProvider.of<CounterCubit>(context).decrement,
-                    child: const Icon(Icons.remove),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                } else {
+                  snackBar = const SnackBar(
+                    content: Text('Decremented'),
+                  );
+                }
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              },
+              builder: (context, state) {
+                return Text(
+                  '${state.value}',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                );
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FloatingActionButton(
+                  onPressed: BlocProvider.of<CounterCubit>(context).increment,
+                  child: const Icon(Icons.add),
+                ),
+                const SizedBox(
+                  width: 16.0,
+                ),
+                FloatingActionButton(
+                  onPressed: BlocProvider.of<CounterCubit>(context).decrement,
+                  child: const Icon(Icons.remove),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
